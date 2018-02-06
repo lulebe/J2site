@@ -1,0 +1,26 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Lehrer{% endblock %}
+
+{% block site %}
+
+<h2>Lehrer</h2>
+
+
+{% if admin %}
+<a href="addteacher.php" class="secondary button admin">Lehrer hinzufügen</a>
+{% endif %}
+{% if lele %}
+<a href="teacherpwlist.php" class="secondary button admin">Passwortliste</a>
+{% endif %}
+
+
+<ul class="nice-list">
+{% for teacher in teachers %}
+
+  <li><a href="teacher.php?id={{teacher.id}}" class="listlink">{{teacher.dispname}} <small><small>({{teacher.name}})</small></small></a></li>
+
+{% endfor %}
+</ul>
+
+{% endblock %}

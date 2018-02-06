@@ -1,0 +1,59 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Home{% endblock %}
+
+{% block site %}
+{% if student %}
+<h2>top News</h2>
+
+<ul class="news">
+  <li>
+    <h4>{{topnews.headline}}</h4>
+      <small>{{topnews.time}}</small><br>
+      {{topnews.content}}
+      <br><br>
+  </li>
+</ul>
+
+
+<h2>Information</h2>
+<p>Diese Homepage gehört zur Abizeitung. Es wäre super, wenn ihr euch Zeit nehmt, um ein paar Kommentare zu schreiben. <br>
+Die Funktionen sollten selbsterklärend sein, aber hier nochmal eine Erklärung: <br>
+<ul>
+  <li>
+    Unter <a href="/app/misccomments.php">diverses</a> könnt allgemeine Kommentare zu Situationen, die sonst nirgends passen, schreiben.
+  </li>
+  <li>
+    Unter <a href="/app/students.php">Schüler</a> könnt ihr Schüler auswählen und einen Kommentar auf deren Seite schreiben.
+  </li>
+  <li>
+  Bei <a href="/app/classes.php">Kurse</a> solltet ihr zunächst die Kurse aufrufen, in denen ihr seid und euch als Teilnehmer eintragen. Wählt dabei gleich noch euren Lieblingskurs aus. Dann könnt ihr auch dort Kommentare und Zitate einfügen.
+  </li>
+  <li>
+  Unter <a href="/app/teachers.php">Lehrer</a> könnt ihr Lehrer anlegen, um, unabhängig von einem 4-stündigen Kurs, Zitate für den Lehrer einzufügen. Das können auch Dialoge zwischen Schüler und Lehrer sein.
+  </li>
+  <li>
+    Die <a href="/app/surveys.php">Umfragen</a> solltet ihr ab und zu besuchen, um die in der Abizeitung üblichen Umfragen zu beantworten. Ihr könnt auch selbst neue Antwortmöglichkeiten hinzufügen.
+  </li>
+</ul>
+<strong>Wichtig:</strong> Ihr könnt nicht euer eigenes Profil kommentieren und seht nur eure eigenen Kommentare auf anderen Profilen.
+<br><br>
+<em>euer Abizeitungsgremium</em>
+</p>
+<br>
+<h2>alle News</h2>
+
+<ul class="news">
+  {% for new in news %}
+  <li>
+    <h4>{{new.headline}}</h4>
+      <small>{{new.time}}</small><br>
+      {{new.content}}
+      <br><br>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+
+{% endblock %}

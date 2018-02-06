@@ -1,0 +1,188 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Kurs{% endblock %}
+
+{% block site %}
+
+<h2>{{class.name}}</h2>
+<section class="person-info">
+  <dl>
+    <dt>Lehrer</dt>
+    <dd>
+      {{class.teacher}}
+      {% if admin %}
+        <form method="post">
+          <small>Lehrer ändern:</small><br>
+          <select name="teacherid" class="expand">
+            <option disabled selected>--Lehrer wählen--</option>
+            {% for teacher in teachers %}
+              <option value="{{teacher.id}}">{{teacher.name}}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <button type="submit" class="expand small">ändern</button>
+        </form>
+      {% endif %}
+    </dd>
+    <dt>Schülerzahl</dt>
+    <dd>{{class.studentcount}} Schüler</dd>
+  </dl>
+  <br>
+  {% if student %}
+  {% if ismember %}
+  <strong>Du bist in diesem Kurs.</strong> <br>
+  <a href="?id={{class.id}}&rmmember" class="expand secondary button">als Teilnehmer entfernen</a><br>
+  {% else %}
+  <strong>Du bist nicht in diesem Kurs.</strong> <br>
+  <a href="?id={{class.id}}&addmember" class="expand secondary button">als Teilnehmer eintragen</a><br>
+  {% endif %}
+  <a href="?id={{class.id}}&myfav" class="expand button">als Lieblingskurs wählen</a>
+  {% endif %}
+  <dl>
+    <dt>Schüler</dt>
+    <dd><ul>
+      {% for student in class.students %}
+        <li><a href="profile.php?id={{student.id}}">{{student.name}}</a></li>
+      {% endfor %}
+    </ul></dd>
+  </dl>
+</section>
+
+{% if student %}
+<section class="container profile">
+  <h3>Zitate</h3>
+  {% for cite in class.cites %}
+    <a name="{{cite.id}}"></a>
+    <article class="comment">
+      <span><a href="profile.php?id={{cite.userid}}">{{cite.name}}</a> - {{cite.time}}</span>
+      <blockquote>{{cite.content}}</blockquote>
+      <p>
+        - {{cite.source}}
+        {% if cite.canedit %}
+        -
+        <a href="?id={{class.id}}&editcite={{cite.id}}#cite">bearbeiten</a>
+        -
+        <a href="?id={{class.id}}&deletecite={{cite.id}}">löschen</a>
+        {% endif %}
+      </p>
+    </article>
+  {% endfor %}
+  <article class="new-comment">
+  <a name="cite"></a>
+    <small>Keine Emojis verwenden, die kann man nicht drucken, macht Smileys also so: &lt;3, :D, ;), :P etc.</small>
+    <form action="class.php?id={{class.id}}" method="post">
+      <input type="hidden" name="editcite" value="{{editcite.id}}">
+      Quelle: <br>
+      <input type="text" name="source" placeholder="Herr Schlette + Felix" style="width: 100%;" value="{{editcite.source}}"> <br>
+      Zitat: <br>
+      <textarea name="cite" placeholder='F: "Oh, da muss man aufpassen!" S: "Jetzt mach hier mal nicht son Zinnober!"'>{{editcite.content}}</textarea><br>
+      <button class="expand">{% if editcite %}speichern{% else %}Zitat eintragen{% endif %}</button>
+      {% if editcite %}<a href="class.php?id={{class.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+</section>
+<section class="container profile">
+  <h3>Kommentare</h3>
+  {% for comment in class.comments %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+        {% if comment.canedit %}
+        <a href="?id={{class.id}}&editcomment={{comment.id}}#comment">bearbeiten</a>
+        -
+        <a href="?id={{class.id}}&deletecomment={{comment.id}}">löschen</a>
+        {% endif %}
+        von <a href="profile.php?id={{comment.userid}}">{{comment.name}}</a>
+      </p>
+    </article>
+  {% endfor %}
+  <article class="new-comment">
+  <a name="comment"></a>
+    <small>Keine Emojis verwenden, die kann man nicht drucken, macht Smileys also so: &lt;3, :D, ;), :P etc.</small>
+    <form action="class.php?id={{class.id}}" method="post">
+      <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+      <textarea name="comment">{{editcomment.content}}</textarea>
+      <button class="expand" type="submit">{% if editcomment %}speichern{% else %}kommentieren{% endif %}</button>
+      {% if editcomment %}<a href="class.php?id={{class.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+</section>
+{% endif %}
+
+  
+{% if canteachercomment %}
+{% if admin %}
+<section class="container profile">
+  <h2>Lehrereinträge</h2>
+</section>
+{% endif %}
+<section class="container profile">
+  <h3>Zitate</h3>
+  {% for cite in class.teachercites %}
+    <a name="{{cite.id}}"></a>
+    <article class="comment">
+      <span>{% if admin %}<a href="teacher.php?id={{comment.userid}}">{{cite.name}}</a>
+        {% else %}<strong>{{cite.name}}</strong>{% endif %} - {{cite.time}}</span>
+      <blockquote>{{cite.content}}</blockquote>
+      <p>
+        - {{cite.source}}
+        {% if teacher %}
+        -
+        <a href="?id={{class.id}}&editcite={{cite.id}}#cite">bearbeiten</a>
+        {% endif %}
+        -
+        <a href="?id={{class.id}}&deletecite={{cite.id}}">löschen</a>
+      </p>
+    </article>
+  {% endfor %}
+  {% if teacher %}
+  <article class="new-comment">
+  <a name="cite"></a>
+    <form action="class.php?id={{class.id}}" method="post">
+      <input type="hidden" name="editcite" value="{{editcite.id}}">
+      Quelle: <br>
+      <input type="text" name="source" placeholder="Herr Schlette + Felix" style="width: 100%;" value="{{editcite.source}}"> <br>
+      Zitat: <br>
+      <textarea name="cite" placeholder='F: "Oh, da muss man aufpassen!" S: "Jetzt mach hier mal nicht son Zinnober!"'>{{editcite.content}}</textarea><br>
+      <button class="expand">{% if editcite %}speichern{% else %}Zitat eintragen{% endif %}</button>
+      {% if editcite %}<a href="class.php?id={{class.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+  {% endif %}
+</section>
+<section class="container profile">
+  <h3>Kommentare</h3>
+  {% for comment in class.teachercomments %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+        {% if teacher %}
+        <a href="?id={{class.id}}&editcomment={{comment.id}}#comment">bearbeiten</a>
+        -
+        {% endif %}
+        <a href="?id={{class.id}}&deletecomment={{comment.id}}">löschen</a>
+        von
+        {% if admin %}<a href="teacher.php?id={{comment.userid}}">{{comment.name}}</a>
+        {% else %}<strong>{{comment.name}}</strong>{% endif %}
+      </p>
+    </article>
+  {% endfor %}
+  {% if teacher %}
+  <article class="new-comment">
+  <a name="comment"></a>
+    <form action="class.php?id={{class.id}}" method="post">
+      <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+      <textarea name="comment">{{editcomment.content}}</textarea>
+      <button class="expand" type="submit">{% if editcomment %}speichern{% else %}kommentieren{% endif %}</button>
+      {% if editcomment %}<a href="class.php?id={{class.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+  {% endif %}
+</section>
+  {% endif %}
+
+{% endblock %}

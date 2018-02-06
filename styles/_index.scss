@@ -1,0 +1,24 @@
+fieldset.login-container {
+  margin: 0 auto;
+  width: 100%;
+  @media #{$large} {
+    max-width: 20em;
+  }
+  padding: 20px;
+  border: 2px dotted #ddd;
+  border-radius: 15px;
+  legend {
+    font-weight: 100;
+    font-size: 2em;
+  }
+  input {
+    margin-bottom: 0.5em;
+    width: 100%;
+  }
+&.login-error {
+  border: 2px dotted red;
+  input {
+    border: 1px solid red;
+  }
+}
+}

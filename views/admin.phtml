@@ -1,0 +1,86 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Admin-Bereich{% endblock %}
+
+{% block site %}
+
+<h2>Administration</h2>
+
+{% if mailsuccess %}
+<h3>Die E-Mails wurden versandt!</h3>
+{% endif %}
+{% if mailerror %}
+<h3>Die E-Mails wurden leider nicht versandt, ein Fehler trat auf!</h3>
+{% endif %}
+
+<h4>SQL</h4>
+<h5>Statements</h5>
+<small>
+  Klickt ein Statement an und wählt dann "ausführen", um das Ergebnis zu sehen.
+</small>
+<script>
+  function loadQuery(el) {
+    document.getElementById('sql').value = el.getElementsByTagName('pre')[0].innerHTML;
+  }
+</script>
+<ul>
+  {% for query in queries %}
+    <li>
+      <a href="#sql" onclick="loadQuery(this)">{{query.name}} - <pre class="inline">{{query.querystring}}</pre></a>
+      <a href="?delquery={{query.id}}"><small>löschen</small></a>
+    </li>
+  {% endfor %}
+</ul>
+<small>
+Lasst da lieber die Finger von :D <br>sonst:
+<a href="http://www.w3schools.com/sql/" target="_blank">W3Schools: SQL</a>
+</small>
+<form action="admin.php#sql" method="post">
+  <a name="sql"></a>
+  <textarea name="sql" id="sql" style="width: 100%; min-height: 3em; font-family:  monospace;"
+  placeholder="SELECT c.*,u.name FROM comments c LEFT JOIN user u ON (c.userid=u.id) LIMIT 0,5 ORDER BY time">{{sqlstmt}}</textarea><br>
+  <button type="submit" name="exec" value="true">ausführen</button><br>
+  <input type="text" name="queryname" placeholder="query-Name" style="width: 100%;">
+  <button type="submit" class="secondary" name="save" value="true">speichern</button>
+</form>
+{% if sqlresponse %}
+<p>
+  <strong>Ergebnis:</strong>
+  <pre id="sqlresponse" style="border-left: 3px solid #aaa; background: #f3f3f3;">{{sqlresponse}}</pre> <br>
+  <script>
+    var sqlresEl = document.getElementById('sqlresponse');
+    sqlresEl.innerHTML = JSON.stringify(JSON.parse(sqlresEl.innerHTML), undefined, 2);
+  </script>
+  <small><a href="http://www.jsonformatter.de" target="_blank">JSON Formatter</a> oder kopieren und im Terminal: <pre>pbpaste | python -m json.tool</pre></small>
+</p>
+{% endif %}
+
+<h4>News eintragen</h4>
+<form action="admin.php" method="post">
+  Überschrift <br>
+  <input type="text" name="newshead" required placeholder="Abizeitung jetzt fertig!" style="width: 100%">
+  <br>
+  Text <br>
+  <textarea name="newstext" required style="width: 100%; min-height: 7em;" placeholder="Ach was, Quatsch! Als ob dieses Scheiß-Gremium jemals irgendwas auf die Reihe bekommt :D"></textarea>
+  <br>
+  <input type="checkbox" name="sendmail" id="cbsendmail">
+  <label for="cbsendmail">E-Mail senden</label><br>
+  <input type="checkbox" name="resptome" id="cbresptome">
+  <label for="cbresptome">Antworten an meine E-Mail</label><br>
+  <input type="checkbox" name="mailonly" id="cbmailonly">
+  <label for="cbmailonly">nur als E-Mail</label><br>
+  <small>
+  Ist diese Option gewählt, wird der Text nicht nur bei den News gezeigt, sondern auch an alle E-Mails in der Liste unten geschickt. Ist "nur als E-Mail" gewählt, erscheint die Nachricht nicht in den News. Als Absender ist "&lt;Abizeitung&gt; j2@lulebe.net" angegeben. Die Antworten können unter <a href="https://webmail.1blu.de" target="_blank">webmail.1blu.de</a> gelesen werden, das Passwort ist "0fv9na", der Nutzername "j2@lulebe.net". Ist die Option "Antworten an meine E-Mail" gewählt, werden Antworten auf die E-Mail stattdessen an deine im Profil eingetragene E-Mail gesandt.
+  </small><br>
+  
+  <button type="submit">senden</button>
+</form>
+
+<h4>E-Mail-Liste</h4>
+<ul>
+{% for user in users %}
+<li>{{user.name}} - <a href="mailto:{{user.mail}}">{{user.mail}}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

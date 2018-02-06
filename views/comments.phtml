@@ -1,0 +1,71 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Kommentare{% endblock %}
+
+{% block site %}
+
+<section class="comments">
+  <h3>deine Kommentare</h3>
+  <p>
+    Du siehst nur deine eigenen Kommentare. Bitte sei nicht beleidigend, wenn du Kommentare schreibst und achte darauf, ob die betroffenen Personen mit dem Inhalt einverstanden sein werden.
+  </p>
+  <br>
+  {% if student %}
+  <h3>allgemeine Kommentare</h3>
+  <p><small>Hier kannst du Kommentare schreiben, die zu keinem Kurs, Lehrer oder Schüler passen, z.B. über witzige Situation auf Studienfahrten, in den Pausen etc.</small></p>
+  {% for comment in general %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+        <a href="/app/misccomments.php#{{comment.id}}">aufrufen</a>
+      </p>
+    </article>
+  {% endfor %}
+  {% endif %}
+  <h3>Kommentare zu Schülern</h3>
+  {% for comment in students %}
+  <article class="comment">
+    <span>{{comment.time}}</span>
+    <blockquote>{{comment.content}}</blockquote>
+    <p>bei <a href="profile.php?id={{comment.target}}#{{comment.id}}">{{comment.name}}</a></p>
+  </article>
+  {% endfor %}
+  <h3>Kommentare zu Kursen</h3>
+  {% for comment in classes %}
+  <article class="comment">
+    <span>{{comment.time}}</span>
+    <blockquote>{{comment.content}}</blockquote>
+    <p>für <a href="class.php?id={{comment.target}}#{{comment.id}}">{{comment.name}}</a></p>
+  </article>
+  {% endfor %}
+  <h3>Zitate</h3>
+  {% for cite in cites %}
+  <article class="comment">
+    <span>{{cite.time}}</span>
+    <blockquote>{{cite.content}}</blockquote>
+    <p>von {{cite.source}} (<a href="class.php?id={{cite.target}}#{{cite.id}}">aufrufen</a>)</p>
+  </article>
+  {% endfor %}
+  {% if student %}
+  <h3>Lehrerkommentare</h3>
+  {% for teacher in teachers %}
+  <article class="comment">
+    <span>{{teacher.time}}</span>
+    <blockquote>{{teacher.content}}</blockquote>
+    <p>von {{teacher.source}} (<a href="teacher.php?id={{teacher.target}}#{{teacher.id}}">aufrufen</a>)</p>
+  </article>
+  {% endfor %}
+  <h3>Lehrerzitate</h3>
+  {% for cite in teachercites %}
+  <article class="comment">
+    <span>{{cite.time}}</span>
+    <blockquote>{{cite.content}}</blockquote>
+    <p>von {{cite.source}} (<a href="teacher.php?id={{cite.target}}#{{cite.id}}">aufrufen</a>)</p>
+  </article>
+  {% endfor %}
+  {% endif %}
+</section>
+
+{% endblock %}

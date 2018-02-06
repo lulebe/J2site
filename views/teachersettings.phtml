@@ -1,0 +1,20 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Einstellungen{% endblock %}
+
+{% block site %}
+
+<h2>Einstellungen</h2>
+
+{% if pwChanged %}
+  <h4>Das Passwort wurde geändert!</h4>
+{% endif %}
+
+<form method="post" autocomplete="off">
+    Passwort ändern:<br>
+    <input type="password" name="pw" placeholder="neues Passwort">
+    <br>
+    <button type="submit">speichern</button>
+  </form>
+
+{% endblock %}

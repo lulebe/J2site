@@ -1,0 +1,150 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Profil{% endblock %}
+
+{% block site %}
+
+<h2>{{profile.name}}</h2>
+<aside class="person-info">
+  <img src="/images/profiles/{{profile.img}}" alt="Profilbild"><br />
+  {% if profile.ex %}
+  <strong>Ehemaliger</strong>
+  {% else %}
+  <dl>
+    <dt>Geburtstag</dt>
+    <dd>- {{profile.dob}}</dd>
+    <dt>Lieblingskurs</dt>
+    <dd>-
+      {%if profile.bestClass %}
+        <a href="class.php?id={{profile.bestClass}}">{{profile.bestClassName}}</a>
+      {% else %}
+        nicht gewählt
+      {% endif %}
+    </dd>
+    <dt>alle Kurse</dt>
+    <dd>
+      <ul>
+        {% for class in profile.classes %}
+          <li><a href="class.php?id={{class.id}}">{{class.name}}</a></li>
+        {% endfor %}
+      </ul>
+    </dd>
+  </dl>
+  {% endif %}
+  {% if admin %}
+  <script>
+    function toggleLogins() {
+      var el = document.getElementById('logins');
+      if (el.style.display == 'block')
+        el.style.display = 'none';
+      else
+        el.style.display = 'block';
+    }
+  </script>
+  <button onclick="toggleLogins()">zeige/verstecke Logins</button>
+  <ul id="logins" style="display: none">
+    {% for login in logins %}<li>{{login.dt}}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</aside>
+{% if editable %}
+<section class="container profile">
+  <h3>Profil bearbeiten</h3>
+  {% if admin %}
+  <small>Liebe Admins: Bitte baut hier keinen Scheiss :)</small><br><br>
+  {% endif %}
+  <form action="/app/profile.php?id={{profile.id}}" method="post" enctype="multipart/form-data" autocomplete="off">
+    Profilbild <small>JPEG bis 1MB</small><br>
+    <input type="file" name="profilepic" accept="image/jpeg">
+    <br>
+    E-Mail <br>
+    <input type="email" name="email" placeholder="neue E-Mail" value="{{profile.mail}}">
+    <br>
+    Passwort <br>
+    <input type="password" name="pw" placeholder="neues Passwort">
+    <br>
+    <input type="hidden" name="edited" value="true">
+    <button type="submit">speichern</button>
+  </form>
+</section>
+{% endif %}
+<section class="container profile">
+  <h3>Kommentare</h3>
+  {% if student %}
+  {% for comment in profile.comments %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+      <a href="?id={{profile.id}}&editcomment={{comment.id}}#comment">bearbeiten</a>
+      -
+      <a href="?id={{profile.id}}&deletecomment={{comment.id}}">löschen</a>
+      {% if admin %}
+      von <a href="profile.php?id={{comment.userid}}">{{comment.name}}</a>
+      {% endif %}
+      </p>
+    </article>
+  {% endfor %}
+  {% if cancomment %}
+    <article class="new-comment">
+    <a name="comment"></a>
+    <small>Keine Emojis verwenden, die kann man nicht drucken, macht Smileys also so: &lt;3, :D, ;), :P etc.</small>
+      <form action="profile.php?id={{profile.id}}" method="post">
+        <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+        <textarea name="comment">{{editcomment.content}}</textarea>
+        <button class="expand" type="submit">kommentieren</button>
+      </form>
+    </article>
+  {% else %}
+    <article class="comment">
+      <small>Du kannst nicht bei dir selbst kommentieren.</small>
+    </article>
+  {% endif %}
+  {% endif %}
+  {% if canteachercomment %}
+    {% if admin %}
+      <h3>Lehrer-Kommentare</h3>
+    {% endif %}
+    {% for comment in profile.teachercomments %}
+      <a name="{{comment.id}}"></a>
+      <article class="comment">
+        <span>{{comment.time}}</span>
+        <blockquote>{{comment.content}}</blockquote>
+        <p>
+        {% if teacher %}
+        <a href="?id={{profile.id}}&editcomment={{comment.id}}#comment">bearbeiten</a>
+        -
+        {% endif %}
+        <a href="?id={{profile.id}}&deletecomment={{comment.id}}">löschen</a>
+        {% if admin %}
+        von <a href="teacher.php?id={{comment.userid}}">{{comment.name}}</a>
+        {% endif %}
+        </p>
+      </article>
+    {% endfor %}
+    {% if teacher %}
+    <article class="new-comment">
+    <a name="comment"></a>
+      <form action="profile.php?id={{profile.id}}" method="post">
+        <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+        <textarea name="comment">{{editcomment.content}}</textarea>
+        <button class="expand" type="submit">kommentieren</button>
+      </form>
+    </article>
+    {% endif %}
+  {% endif %}
+  {% if admin %}
+    <h3>alle Kommentare für Zeitung</h3>
+    <p style="font-size: 75%">
+      {% for comment in profile.comments %}
+      <strong>{{comment.name}}</strong>: {{comment.content}} ++++
+      {% endfor %}
+      {% for comment in profile.teachercomments %}
+      <strong>{{comment.name}}</strong>: {{comment.content}} ++++ 
+      {% endfor %}
+    </p>
+  {% endif %}
+</section>
+
+{% endblock %}

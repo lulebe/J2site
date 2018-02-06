@@ -1,0 +1,28 @@
+.nice-list.survey {
+  li {
+    &.selected a.listlink{
+      background: $success-color;
+      color: white;
+      pointer-events: none;
+    }
+  }
+}
+
+.chart {
+  height: 60px;
+  width: 100%;
+  span {
+    display: block;
+    float: left;
+    height: 100%;
+    overflow: hidden;
+    text-shadow: 0px 0px 1px black;
+    color: white;
+    text-align: center;
+    padding-top: 2em;
+    font-size: 0.7em;
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{% extends "layout.phtml" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="topbar clearfix">
+  <h1><a href="/index.php">J2 Seite</a></h1>
+  <ul class="left">
+    <li id="menuToggle"><a onclick="toggleMenu()">MENÜ</a></li>
+  </ul>
+  <ul class="right" id="mainmenu">
+    <li><a href="/index.php?logout=true" class="alert button expand">Logout</a></li>
+  </ul>
+</div>
+
+<div class="main-container">
+  <fieldset class="login-container">
+    <legend>wichtige Daten</legend>
+    <form action="login.php" method="post" autocomplete="off" onsubmit="return validateEmail();">
+      E-Mail<br>
+      <input type="email" name="email" placeholder="deine E-Mail" required>
+      neues Passwort (kann auch später geändert werden)<br>
+      <input type="password" name="newpw" placeholder="neues Passwort">
+      dein Geburtstag<br>
+      <input type="text" maxlength="2" size="2" name="day" placeholder="TT" required style="width:auto">
+      <input type="text" maxlength="2" size="2" name="month" required placeholder="MM" style="width:auto">
+      <input type="text" maxlength="4" size="4" name="year" required placeholder="JJJJ" style="width:auto">
+      <br>
+      <button type="submit" class="expand">weiter</button>
+    </form>
+    <small>Wir brauchen deine E-Mail, um in seltenen Fällen wichtige Nachrichten schicken zu können. Keine Angst, da kommt kein Spam an, also gib bitte eine echte Adresse an, die du auch nutzt!</small>
+  </fieldset>
+</div>
+
+{% endblock %}

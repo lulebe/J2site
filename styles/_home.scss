@@ -1,0 +1,13 @@
+ul.news > li {
+  border-bottom: 1px solid #ddd;
+  &:last-child {
+    border-bottom: none;
+  }
+  small {
+    font-weight: 300;
+  }
+  h4 {
+    margin-top: 0.7em;
+    margin-bottom: 0.3em;
+  }
+}

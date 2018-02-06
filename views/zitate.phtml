@@ -1,0 +1,16 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Zitate{% endblock %}
+
+{% block site %}
+
+<h2>Zitate</h2>
+
+{% for c in zitate.cl %}
+<strong>{{c.source}}</strong> {{c.content}} <br><br>
+{% endfor %}
+{% for c in zitate.t %}
+<strong>{{c.source}}</strong> {{c.content}} <br><br>
+{% endfor %}
+
+{% endblock %}

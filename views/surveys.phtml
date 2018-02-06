@@ -1,0 +1,29 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Umfragen{% endblock %}
+
+{% block site %}
+
+<h2>Umfragen</h2>
+
+{% if admin %}
+<a href="addsurvey.php" class="secondary button admin">Umfrage hinzufügen</a>
+{% endif %}
+
+<p>Noch nicht abgeschlossene Umfragen erscheinen fett gedruckt oben in der Liste. Schau dennoch ab und an die anderen Umfragen an, es könnten neue, bessere Antwortmöglichkeiten eingetragen worden sein.</p>
+
+<ul class="nice-list">
+{% for survey in surveys %}
+
+  <li><a href="survey.php?id={{survey.id}}" class="listlink">
+    {% if survey.uid %}
+      {{survey.name}}
+    {% else %}
+      <strong>{{survey.name}}</strong>
+    {% endif %}
+  </a></li>
+
+{% endfor %}
+</ul>
+
+{% endblock %}

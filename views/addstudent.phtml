@@ -1,0 +1,18 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Schüler hinzufügen{% endblock %}
+
+{% block site %}
+
+<h2>Schüler hinzufügen</h2>
+
+{% if newpw %}
+<p>Der Schüler {{newname}} mit dem Passwort {{newpw}} wurde hinzugefügt.</p>
+{% endif %}
+
+<form action="addstudent.php" method="post">
+  <input type="text" name="name" placeholder="Name">
+  <button type="submit">hinzufügen</button>
+</form>
+
+{% endblock %}

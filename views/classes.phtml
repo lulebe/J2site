@@ -1,0 +1,31 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Kurse{% endblock %}
+
+{% block site %}
+
+<h2>Kurse</h2>
+
+{% if admin %}
+<a href="addclass.php" class="secondary button admin">Kurs hinzufügen</a>
+{% endif %}
+
+{% if student %}
+<p>Deine eigenen Kurse erscheinen oben in der Liste und sind fett gedruckt.</p>
+{% endif %}
+
+<ul class="nice-list">
+{% for class in classes %}
+
+  <li><a href="class.php?id={{class.id}}" class="listlink">
+    {% if class.userid %}
+      <strong>{{class.name}} - <small>{{class.teacher}}</small></strong>
+    {% else %}
+      {{class.name}} - <small>{{class.teacher}}</small>
+    {% endif %}
+  </a></li>
+
+{% endfor %}
+</ul>
+
+{% endblock %}

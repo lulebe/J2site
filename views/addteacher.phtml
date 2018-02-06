@@ -1,0 +1,20 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Lehrer hinzufügen{% endblock %}
+
+{% block site %}
+
+<h2>Lehrer hinzufügen</h2>
+
+{% if pw %}
+<p>Der Lehrer {{newname}} wurde hinzugefügt, PW: {{pw}}</p>
+{% endif %}
+
+<form action="addteacher.php" method="post">
+  Name:<br>
+  <input type="text" name="name" placeholder="Dr. Herbert Benner" style="width: 17em;"><br>
+  <br>
+  <button type="submit">hinzufügen</button>
+</form>
+
+{% endblock %}

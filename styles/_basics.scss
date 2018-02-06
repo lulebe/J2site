@@ -1,0 +1,255 @@
+//colors
+$primary-color: #eb690b;
+$secondary-color: #999999;
+$success-color: #66dd33;
+$alert-color: #dd1111;
+$border-radius: 4px;
+
+//media queries
+$large: "(min-width: 769px)";
+
+
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
+}
+
+.admin {
+  font-family: monospace;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover:not(.button) {
+    color: scale-color($primary-color, $lightness: -20%);
+  }
+}
+
+.expand {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.3em;
+  @media #{$large} {
+    width: auto;
+    &.l-50 {
+      min-width: 50%;
+    }
+  }
+}
+
+button, .button {
+  display: inline-block;
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  color: white;
+  background: $primary-color;
+  border-radius: $border-radius;
+  border-width: 0;
+  outline-width: 0;
+  font-size: 1em;
+  &.secondary {
+    background: $secondary-color;
+  }
+  &.alert {
+    background: $alert-color;
+  }
+  &:hover {
+    box-shadow: 0 0 8px -3px black inset;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+  &.small {
+    padding: 4px 6px;
+    font-size: 0.7em;
+  }
+}
+
+input[type=text], input[type=password], input[type=email] {
+  outline: none;
+  border-radius: $border-radius;
+  border: 1px solid #999;
+  font-size: 1em;
+  padding: 5px;
+  margin-bottom: 5px;
+  &:focus {
+    box-shadow: 0 0 10px -5px black inset;
+  }
+}
+textarea {
+  outline: none;
+  border-radius: $border-radius;
+  border: 1px solid #999;
+  resize: vertical;
+  font-size: 1em;
+  padding: 10px;
+  margin-bottom: 5px;
+  &:focus {
+    box-shadow: 0 0 20px -5px black inset;
+  }
+}
+
+select {
+  margin-bottom: 5px;
+}
+
+.copyright {
+  padding: 2em 0 1em 0;
+  text-align: center; 
+  clear: both;
+  font-size: 0.8em;
+}
+
+
+pre {
+  font-size: 80%;
+}
+pre.inline {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 70%;
+  color: grey;
+}
+
+
+.topbar {
+  width: 100%;
+  background: $primary-color;
+  h1 {
+    margin-top: 0;
+    padding: 15px 0 0 15px;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 900;
+    a {
+      color: white;
+      transition: transform 0.5s cubic-bezier(0.500, 0.040, 0.900, 0.335);
+      display: inline-block;
+      &:hover {
+        transform: rotate(363deg) scale(1.3);
+        color: white;
+      }
+    }
+  }
+  ul {
+    display: block;
+    &.visible {
+      display: block;
+    }
+    float: none;
+    padding: 0;
+    &.right {
+      display: none;
+      &.visible {
+        display: block;
+      }
+    }
+    @media #{$large} {
+      &.left {
+        float: left;
+        margin-left: 15px;
+      }
+      &.right {
+        float: right;
+        margin-right: 15px;
+      }
+      &.visible, &:not(.visible) {
+        display: inline-block;
+      }
+      display: inline-block;
+    }
+    li {
+      display: block;
+      @media #{$large} {
+        display: inline-block;
+      }
+      a:not(.button) {
+        display: block;
+        color: white;
+        padding: 0.7em;
+        border-radius: $border-radius;
+        &:hover {
+          background: rgba(1,1,1,0.1);
+        }
+        &:active {
+          background: rgba(1,1,1,0.15);
+        }
+        b {
+          position: relative;
+          top: -2px;
+          display: inline-block;
+          margin-left: 0.5em;
+          color: white;
+          font-weight: 900;
+          border-radius: 50%;
+          background-color: red;
+          border: 2px solid white;
+          padding: 0.3em 0 0.4em 0;
+          text-align: center;
+          width: 2.2em;
+          height: 2.2em;
+          font-size: 0.7em;
+        }
+      }
+      button {
+        width: 100%;
+        @media #{$large} {
+          width: auto;
+        }
+      }
+      &#menuToggle {
+        text-align: center;
+        font-weight: 900;
+        @media #{$large} {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+
+
+.main-container {
+  padding-top: 1em;
+  max-width: 1100px;
+  padding: 0 20px;
+  @media #{$large} {
+    margin: 0 auto;
+  }
+}
+
+
+ul.nice-list {
+  list-style: decimal;
+  li {
+    border-bottom: 1px solid #ddd;
+    &:last-child {
+      border-bottom: none;
+    }
+    a.listlink {
+      padding: 15px;
+      display: block;
+      &:hover {
+        box-shadow: 0 0 110px -40px black inset;
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Passwortliste{% endblock %}
+
+{% block site %}
+
+<h2>Passwortliste</h2>
+
+{% for usr in user %}
+<div style="padding: 1em; border: 1px solid black; display: inline-block; min-width: 19em; font-size: 1em; margin-bottom: 0.2em;">
+  <span style="font-family: monospace;">USR:</span> <strong>{{usr.name}}</strong><br>
+  <span style="font-family: monospace;">PWD:</span> <em>{{usr.pworig}}</em><br>
+  <span style="font-family: monospace;">URL:</span> <span style="text-decoration: underline">j2.lulebe.net</span>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Passwortliste{% endblock %}
+
+{% block site %}
+
+<h2>Passwortliste</h2>
+
+{% for teacher in teachers %}
+<div style="padding: 0 1em; border: 1px solid black; display: inline-block; width: 49%; font-size: 1em; margin-bottom: 0.2em;">
+  <h3>Abizeitungswebsite</h3>
+  <span style="font-family: monospace;">BENUTZER:</span> <strong>{{teacher.name}}</strong><br>
+  <span style="font-family: monospace;">PASSWORT:</span> <em>{{teacher.pworig}}</em><br>
+  <span style="font-family: monospace;">WEBSEITE:</span> <span style="text-decoration: underline">http://j2.lulebe.net</span>
+  <h4>Funktionen</h4>
+  <ul>
+    <li>Kommentare zu Schülern schreiben</li>
+    <li>Kommentare und Zitate zu den 4-stündigen Kursen schreiben</li>
+    <li><small><small>Eigene Kommentare kann nur man selbst und das Gremium lesen.</small></small></li>
+  </ul>
+</div>
+{% endfor %}
+
+{% endblock %}

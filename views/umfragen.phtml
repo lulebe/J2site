@@ -1,0 +1,13 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Umfragen{% endblock %}
+
+{% block site %}
+
+<h2>Umfragen</h2>
+
+{% for u in umfragen %}
+<img src="/app/chart.php?id={{u}}">
+{% endfor %}
+
+{% endblock %}

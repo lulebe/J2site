@@ -1,0 +1,26 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Kurs hinzufügen{% endblock %}
+
+{% block site %}
+
+<h2>Kurs hinzufügen</h2>
+
+{% if created %}
+<p>Der Kurs {{newname}} mit {{newteacher}} wurde hinzugefügt.</p>
+{% endif %}
+
+<form action="addclass.php" method="post">
+  Name (bitte offiziellen Namen vorstellen, siehe Stundenplan):<br>
+  <input type="text" name="name" placeholder="mu1 Musik 2std." style="width: 17em;"><br>
+  Lehrer <br>
+  <select name="teacherid">
+    {% for teacher in teachers %}
+      <option value="{{teacher.id}}">{{teacher.name}}</option>
+    {% endfor %}
+  </select><br>
+  <br>
+  <button type="submit">hinzufügen</button>
+</form>
+
+{% endblock %}

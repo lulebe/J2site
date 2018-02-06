@@ -1,0 +1,102 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Umfrage{% endblock %}
+
+{% block site %}
+
+
+
+
+{% if admin %}<a href="survey.php?id={{survey.id}}&delsurvey" onclick="delSurvey(event)">löschen</a>{% endif %}
+
+<img src="/app/chart.php?id={{survey.id}}">
+
+
+<a href="#" id="abortmerge" style="visibility: hidden" onclick="abortmerge(event)">zusammenführen abbrechen</a>
+
+<ul class="nice-list survey" style="list-style: upper-latin">
+{% for answer in survey.answers %}
+
+  <li {% if answer.voted %}class="selected"{% endif %} data-votes="{% if answer.count %}{{answer.count}}{% else %}0{% endif %}">
+    <a href="survey_vote.php?id={{survey.id}}&ans={{answer.id}}" class="listlink" onclick="vote(event, this)">
+      {{answer.content}} <br>
+      <em>{% if answer.count %}{{answer.count}}{% else %}0{% endif %} Stimmen</em> - {{answer.percentage}}%
+    </a>
+    {% if admin %}
+    - <a href="survey.php?id={{survey.id}}&delans={{answer.id}}" class="admin delete" onclick="delans(event, '{{answer.content}}')">Antwort löschen</a><br>
+    - <a href="#" class="admin delete mergelink" onclick="mergeans(event, {{answer.id}})" data-sid="{{survey.id}}" data-aid="{{answer.id}}">zusammenführen</a><br>
+    {% endif %}
+  </li>
+
+{% endfor %}
+</ul>
+<p>
+<strong>=> {{percentage}} % gesamt</strong>
+</p>
+
+
+<script>
+  
+function vote (ev, el) {
+  ev.preventDefault();
+  qwest.get(el.href).then(function () {
+    var old = document.querySelector('li.selected');
+    if (old) {
+      old.classList.remove('selected');
+      old.dataset.votes = parseInt(old.dataset.votes)-1;
+      old.querySelector('em').innerHTML = old.dataset.votes + " Stimmen";
+    }
+    el.parentNode.classList.add('selected');
+    el.parentNode.dataset.votes = parseInt(el.parentNode.dataset.votes)+1;
+    el.querySelector('em').innerHTML = el.parentNode.dataset.votes + " Stimmen";
+  });
+}
+
+function delans (ev, ans) {
+  if(!confirm('Antwort "' + ans + '" wirklich löschen?'))
+    ev.preventDefault();
+}
+function delSurvey (ev) {
+  if(!confirm('Umfrage wirklich löschen?'))
+    ev.preventDefault();
+}
+var merging = false;
+var mergelinks = document.querySelectorAll('.mergelink');
+var abortmergelink = document.querySelector('#abortmerge');
+function mergeans (ev, ansid) {
+  if (merging) {
+    if(!confirm('wirklich die erstgewählte Antwort löschen und ihre Stimmen zur zweiten hinzufügen?'))
+      ev.preventDefault();
+    return;
+  }
+  ev.preventDefault();
+  merging = ansid;
+  abortmergelink.style.visibility = 'visible';
+  for (var i=0;i<mergelinks.length;i++) {
+    var el = mergelinks[i];
+    if (el.dataset.aid != merging) {
+      el.href='survey.php?id=' + el.dataset.sid + '&ans=' + el.dataset.aid + '&merge=' + merging;
+      el.text = 'hiermit zusammenführen';
+    }
+    else {
+      el.style.visibility = 'hidden';
+    }
+  }
+}
+function abortmerge (ev) {
+  ev.preventDefault();
+  abortmergelink.style.visibility = 'hidden';
+  for (var i=0;i<mergelinks.length;i++) {
+    var el = mergelinks[i];
+    if (el.dataset.aid != merging) {
+      el.href='survey.php?id=' + el.dataset.sid + '&ans=' + el.dataset.aid;
+      el.text = 'zusammenführen';
+    }
+    else
+      el.style.visibility = 'visible';
+  }
+  merging = false;
+}
+</script>
+
+{% endblock %}

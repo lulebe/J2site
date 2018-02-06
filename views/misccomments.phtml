@@ -1,0 +1,34 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}diverses{% endblock %}
+
+{% block site %}
+
+<section class="container">
+  <h3>allgemeine Kommentare & witzige Dinge</h3>
+  {% for comment in comments %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+      {% if comment.canedit %}
+      <a href="?editcomment={{comment.id}}#comment">bearbeiten</a>
+      -
+      <a href="?deletecomment={{comment.id}}">löschen</a>
+        {% endif %}
+      von <a href="profile.php?id={{comment.userid}}">{{comment.name}}</a>
+      </p>
+    </article>
+  {% endfor %}
+    <article class="new-comment">
+    <a name="comment"></a>
+      <form action="misccomments.php" method="post">
+        <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+        <textarea name="comment">{{editcomment.content}}</textarea>
+        <button class="expand" type="submit">kommentieren</button>
+      </form>
+    </article>
+</section>
+
+{% endblock %}

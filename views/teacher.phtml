@@ -1,0 +1,85 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Lehrer{% endblock %}
+
+{% block site %}
+
+<h2>{{teacher.dispname}}</h2>
+
+<section class="person-info">
+  <form action="?id={{teacher.id}}" method="post">
+  <strong>Name ändern</strong><br>
+  <input type="text" name="name" value="{{teacher.dispname}}" autocomplete="off" style="width: 100%;">
+  <button type="submit">ändern</button>
+  </form>
+  {% if admin %}
+    <form action="?id={{teacher.id}}" method="post">
+    <strong>Passwort ändern</strong><br>
+    <input type="text" name="pw" placeholder="neues PW" autocomplete="off" style="width: 100%;">
+    <button type="submit">ändern</button>
+    </form>
+  {% endif %}
+</section>
+
+<section class="container profile">
+  <h3>Zitate</h3>
+  {% for cite in teacher.cites %}
+    <a name="{{cite.id}}"></a>
+    <article class="comment">
+      <span><a href="profile.php?id={{cite.userid}}">{{cite.name}}</a> - {{cite.time}}</span>
+      <blockquote>{{cite.content}}</blockquote>
+      <p>
+        - {{cite.source}}
+        {% if cite.canedit %}
+        -
+        <a href="?id={{teacher.id}}&editcite={{cite.id}}#cite">bearbeiten</a>
+        -
+        <a href="?id={{teacher.id}}&deletecite={{cite.id}}">löschen</a>
+        {% endif %}
+      </p>
+    </article>
+  {% endfor %}
+  <article class="new-comment">
+  <a name="cite"></a>
+    <small>Keine Emojis verwenden, die kann man nicht drucken, macht Smileys also so: &lt;3, :D, ;), :P etc.</small>
+    <form action="?id={{teacher.id}}" method="post">
+      <input type="hidden" name="editcite" value="{{editcite.id}}">
+      Quelle: <br>
+      <input type="text" name="source" placeholder="Herr Schlette + Felix" value="{{editcite.source}}" style="width: 100%;"> <br>
+      Zitat: <br>
+      <textarea name="cite" placeholder='F: "Oh, da muss man aufpassen!" S: "Jetzt mach hier mal nicht son Zinnober!"'>{{editcite.content}}</textarea><br>
+      <button class="expand">{% if editcite %}speichern{% else %}Zitat eintragen{% endif %}</button>
+      {% if editcite %}<a href="?id={{teacher.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+</section>
+<section class="container profile">
+  <h3>Kommentare</h3>
+  {% for comment in teacher.comments %}
+    <a name="{{comment.id}}"></a>
+    <article class="comment">
+      <span>{{comment.time}}</span>
+      <blockquote>{{comment.content}}</blockquote>
+      <p>
+        {% if comment.canedit %}
+        <a href="?id={{teacher.id}}&editcomment={{comment.id}}#comment">bearbeiten</a>
+        -
+        <a href="?id={{teacher.id}}&deletecomment={{comment.id}}">löschen</a>
+        {% endif %}
+        von <a href="profile.php?id={{comment.userid}}">{{comment.name}}</a>
+      </p>
+    </article>
+  {% endfor %}
+  <article class="new-comment">
+  <a name="comment"></a>
+    <small>Keine Emojis verwenden, die kann man nicht drucken, macht Smileys also so: &lt;3, :D, ;), :P etc.</small>
+    <form action="?id={{teacher.id}}" method="post">
+      <input type="hidden" name="editcomment" value="{{editcomment.id}}">
+      <textarea name="comment">{{editcomment.content}}</textarea>
+      <button class="expand" type="submit">{% if editcomment %}speichern{% else %}kommentieren{% endif %}</button>
+      {% if editcomment %}<a href="?id={{teacher.id}}" class="expand secondary button">abbrechen</a>{% endif %}
+    </form>
+  </article>
+</section>
+
+{% endblock %}

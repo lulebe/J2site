@@ -1,0 +1,41 @@
+{% extends "layout.phtml" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="topbar clearfix">
+  <h1><a href="/index.php">J2 Seite</a></h1>
+</div>
+
+<div class="main-container">
+  <fieldset class="login-container {% if loginerror %}login-error{% endif %}">
+    <legend>anmelden</legend>
+    <form action="/app/login.php" method="post">
+      <small>Nutzername</small><br>
+      <input type="text" name="name" placeholder="Name">
+      <small>Passwort</small><br>
+      <input type="password" name="pw" placeholder="Passwort">
+      <div class="clearfix">
+        <button type="submit" class="expand">login</button>
+        <div style="float: right;">
+          <a href="https://www.startssl.com/" target="_blank">
+            <img src="https://www.startssl.com/img/secured.gif" border="0" title="Free SSL Secured By StartCom">
+          </a>
+        </div>
+      </div>
+      <small>Passwort vergessen? <small>Frag Jana <small>(Schifferdecker)</small>, Sophia <small>(Tewald)</small> oder Lena nach einem neuen.</small></small>
+    </form>
+  </fieldset>
+  
+  <h2>Über diese Seite</h2>
+  {% if insecure %}
+  <strong>Mehr Sicherheit: <a href="https://j2.lulebe.net">verschlüsselte Version der Seite</a></strong><br>
+  {% endif %}
+  <p><strong>Diese Seite ist nur für den Abiturjahrgang 2015 am AMG in Stuttgart. Andere werden sie nicht nutzen können und keinen Vorteil davon haben.</strong></p>
+  <p>
+    Ihr könnt hier Kommentare zu den anderen aus der Stufe schreiben, beliebte Zitate eurer Lehrer eintragen und die Kurse kommentieren. Macht ein paar Angaben zu eurer Person, die in der Abizeitung erscheinen können und achtet auf die News direkt nach dem Login, damit ihr wisst, wenn neue Dinge integriert sind, die ihr machen solltet. Nach dem ersten Login sollt ihr eine Mailadresse angeben, damit besonders wichtige Dinge euch mitgeteilt werden können. Ich schreib wirklich keinen Scheiß und nach Möglichkeit gar keine E-Mail, wenn's nicht nötig sein sollte, also gebt bitte eine korrekte Adresse an!
+  </p>
+</div>
+
+{% endblock %}

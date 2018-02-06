@@ -1,0 +1,20 @@
+{% extends "loggedin.phtml" %}
+
+{% block title %}Umfrage hinzufügen{% endblock %}
+
+{% block site %}
+
+<h2>Umfrage hinzufügen</h2>
+
+{% if created %}
+<p>Die Umfrage wurde angelegt.</p>
+{% endif %}
+
+<form action="addsurvey.php" method="post">
+  Frage/Überschrift <br>
+  <input type="text" name="name" placeholder="langweiligster Lehrer" style="width: 17em;"><br>
+  <br>
+  <button type="submit">hinzufügen</button>
+</form>
+
+{% endblock %}
